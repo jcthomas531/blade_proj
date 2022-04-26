@@ -1,0 +1,167 @@
+---
+title: "rand scheme"
+author: "J. C. Thomas"
+date: "4/16/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(ggplot2)
+library(dplyr)
+library(stringr)
+library(tidyr)
+library(kableExtra)
+library(patchwork)
+library(MASS)
+library(EMSaov)
+```
+
+# Research Question
+
+Utility blades are a common household tool used in a variety of applications ranging from breaking down cardboard boxes to stripping wire. Rust is a major concern when working with tools. Depending on the tool, rust can make a tool less effective, unusable, or dangerous. Another factor that may contribute to the performance of a utility blade is the brand. The specifications and desire for quality between brands vary meaning the quality of product will also vary. Each brand sells their product at a specific price based on how good they think their product is meaning that price range also describes the quality of utility blade. This experiment seeks to discover the relationship between rust, brand, and price and the performance of utility blades. Performance is measured by primary function of the tool, the ability to cut. The results of this experiment seek to answer the question: which utility blade is the best purchase for a consumer?
+
+# Design
+
+To answer this question, utility blades will be fit into a weighted jig and drug across a length of 550 paracord. The number of passes it takes to completely sever the cord is the response. As it is more desirable to have a blade that cuts efficiently, fewer passes to cut the cord is a desired characteristic.
+
+A pack of utility blades was bought from 10 well known brands. Price is broken up into 2 groups (low and high price) based on price per blade. The two price groups contain 5 brands, representing the 5 lowest price blades and the 5 highest priced blades. The brands, the number of blades per pack, pack price, price per blade, and price group are shown in table 1. 
+
+```{r, echo=FALSE}
+setwd("C:/Users/jctho/OneDrive/Documents/9 UIowa classes/stat5201 Applied Stat II/project (stat5201)")
+blade_price <- read.csv("blade prices (stat5201).csv")
+blade_price$group <- c(rep("L", 5), rep("H", 5))
+colnames(blade_price) <- c("Brand", "Num. Blades", "Price", "Price Per Blade", 
+                           "Price group")
+blade_price <- arrange(blade_price, Brand)
+kable(blade_price, caption = "Utility Blade Brand and Prices", booktabs = T) |> row_spec(0,bold=TRUE)
+```
+
+Four blades were randomly selected from each of the packs (each pack being a different brand). The first two blades selected receive the rust treatment and the second 2 blades receive the control treatment (no rust). Thus, there are 2 experimental units for each combination of brand and treatment. Table 2 shows the results of the treatment randomization where the value $i$ represents the $i^{th}$ blade from the front of the pack. The details of the randomization procedure can be found in the code appendix.
+
+```{r, echo=FALSE}
+set.seed(826)
+dewalt <- sample(1:10, size = 4, replace = FALSE)
+dewalt_c <- sample(1:5, size = 4, replace = FALSE)
+hart <- sample(1:5, size = 4, replace = FALSE)
+husky <- sample(1:10, size = 4, replace = FALSE)
+hyper_tough <- sample(1:5, size = 4, replace = FALSE)
+irwin <- sample(1:5, size = 4, replace = FALSE)
+kobalt <- sample(1:5, size = 4, replace = FALSE)
+lenox <- sample(1:5, size = 4, replace = FALSE)
+milwaukee <- sample(1:5, size = 4, replace = FALSE)
+stanley<- sample(1:5, size = 4, replace = FALSE)
+rand_groups <- rbind("DeWalt" = dewalt, "Dewalt Carbide" = dewalt_c,
+                     "Hart" = hart, "Husky" = husky, "Hyper Tough" = hyper_tough, 
+                     "Irwin" = irwin, "Kobalt" = kobalt, "Lenox" = lenox, 
+                     "Milwaukee" = milwaukee, "Stanley" = stanley) |> as.data.frame()
+colnames(rand_groups) <- c("Rust", "Rust", "Control", "Control")
+kable(rand_groups, caption = "Treatment Assignment", booktabs = T) |> row_spec(0,bold=TRUE)
+```
+
+The two utility blades selected for the rust treatment were then sprayed with a rusting solution of 150ml of vinegar, 150ml of hydrogen peroxide, and 5 teaspoons of salt. The blades were left outside on a piece of cardboard for 8 hours being flipped and resprayed with the solution every two hours. After the treatment, the blades were brought inside, dried, and set on a new piece of cardboard.They sat for another 12 hours before the testing began. 
+
+The four of blades for each brand were assigned a blade number 1 though 4 with 1 and 2 corresponding to a rusted blade and 3 and 4 corresponding to a control blade. All 40 blade number and brand combinations were randomly placed into a cutting order. The results of this randomization are found in table 3 where the column "Utility Blade" contains the name of a brand followed by a blade number. Details of the randomization process can be found in the code appendix.
+
+```{r, echo=FALSE}
+set.seed(826)
+group_paste <- matrix(rep(NA, 40), nrow = 10, ncol = 4)
+for (i in 1:nrow(group_paste)) {
+  group_paste[i,] <- paste(rownames(rand_groups)[i], 1:4, "")
+}
+group_vec <- c()
+for (i in 1:nrow(group_paste)) {
+  group_vec <- c(group_vec, group_paste[i, ])
+}
+blade_order <- sample(group_vec, 40)
+order_table <- data.frame("Order" = 1:40,
+                          "Utility Blade" = blade_order)
+#write.csv(order_table, "Xblade order and collection (stat5101).csv")
+colnames(order_table) <- c("Order", "Utility Blade")
+kable(list(order_table[1:20,], order_table[21:40,]), 
+      caption = "Testing Order", booktabs = T)
+```
+
+Each blade was then secured into a jig to ensure there is no variation between the passes of each blade. The jig consists of half inch PVC pipe secured to wheels with a Xlb chain towards the front of the jig where the utility blade is held to ensure enough pressure is applied. A piece of 550 paracord is stretched over a piece of melamine, pulled tot, and stapled twice on each side to secure it to the melamine. The section between the sets of staples were the blade passes is approximately 1.5 inches. Each blade was tested only one time to prevent any variation in the response from dulling.
+
+The factors of this experiment are treatment (rust or no rust), brand (see 10 brands in Table 1), and price group (high or low), all of which are fixed factors. Brand and treatment are crossed and brand is nested within price group. Each brand and treatment combination is replicated twice.
+
+# Data
+
+```{r, echo=FALSE, message=FALSE}
+setwd("C:/Users/jctho/OneDrive/Documents/9 UIowa classes/stat5201 Applied Stat II/project (stat5201)")
+blade <- read.csv("blade order and collection (stat5201).csv")
+blade <- blade[-1]
+colnames(blade)[3] <- "pass"
+blade <- arrange(blade, Utility.Blade)
+blade$brand <- str_extract(blade$Utility.Blade, "^[A-Za-z]+ *[A-Za-z]*") |>
+  trimws()
+blade$trt <- rep(c("Rust", "Rust", "Control", "Control"), 10)
+blade <- left_join(blade, blade_price, by = c("brand" = "Brand"))
+blade_res <- blade[-c(1,2,6:8)]
+blade_res <- blade_res |> group_by(brand, trt, `Price group`) |>
+  summarise("con" = paste(pass, collapse = ", ")) |> 
+  pivot_wider(names_from = trt, values_from = con)
+colnames(blade_res)[c(1,2)] <- c("Brand", "Price Group")
+res_tab <- kable(blade_res[c(2,1,3,4)], booktabs = T, caption = "Results") |>
+  add_header_above(c(" "=2, "Treatment" = 2)) |>
+  kable_styling(position = "center") |> row_spec(0,bold=TRUE)
+```
+
+The results from this experiment can be found in the appendix of this document. Diagram 1 shows the results by brand where the color designates the treatment applied to the utility blade. All brands seem to be centered around the 5 pass mark besides Hart and Stanley, which require more passes to cut the cord and have a higher variance of passes. The distribution of the results is visualized in diagrams 2 through 4. Diagram 2 and 3 show that the two price groups and two treatment groups have similar medians. The variance for the low price group is higher than that of the high price group and the variance of the control treatment is higher than that of the rust treatment group. Diagram 4 shows the right skewed distribution of the overall number of passes required to cut the cord. The mass of this distribution fall beneath 10 passes with a few exceptions falling above 10 passes.
+
+```{r, echo=FALSE}
+colnames(blade) <- c("order", "util_blade", "pass", "brand", "trt", 
+                     "num_blade", "price", "ppb", "p_group")
+#
+p0 <- ggplot(blade) + 
+  geom_point(aes(x = brand, y = pass, col = trt), 
+             position = position_jitter(width = .05)) +
+  labs(title = "Diagram 1: Results by Brand")
+p0
+#
+p1 <- ggplot(blade) + 
+  geom_boxplot(aes(x = p_group, y = pass), outlier.color = NA)
+p1 <- p1 + geom_point(aes(x = p_group, y = pass, col = p_group),
+                position = position_jitter(width = .05), alpha = .5)+
+  labs(title = "Diagram 2: Distribuiton Between Price Groups")
+#
+p2 <- ggplot(blade) + geom_boxplot(aes(x = trt, y = pass), outlier.color = NA)
+p2 <- p2 + geom_point(aes(x = trt, y = pass, col = trt),
+                      position = position_jitter(width = .05), alpha = .5) +
+  labs(title = "Diagram 3: Distribuition Between Treatments")
+#
+p3 <- ggplot(blade, aes(x = pass)) +
+   geom_histogram() +
+  labs(title = "Diagram 4: Distribution of All Results")
+(p1 + p2) / p3 + plot_layout(heights = c(2,1))
+```
+
+# Analysis
+
+```{r}
+#
+blade$brand <- as.factor(blade$brand)
+blade$trt <- as.factor(blade$trt)
+blade$p_group <- as.factor(blade$p_group)
+#
+aov0 <- aov(pass ~ p_group*trt + brand*trt, data = blade)
+plot(aov0)
+summary(aov0)
+boxcox(aov0)
+#
+blade$t_pass <- (blade$pass)^(-.5)
+aov01 <- aov(t_pass ~ p_group*trt + brand*trt, data = blade)
+plot(aov01)
+```
+
+
+```{r}
+EMSanova(t_pass ~ p_group + trt + brand,
+         data = blade,
+         type = c("R","F","R"),
+         nested = c(NA, NA, "p_group"))
+str(blade)
+```
+
