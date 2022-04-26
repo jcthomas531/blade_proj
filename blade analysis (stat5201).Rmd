@@ -20,22 +20,23 @@ library(EMSaov)
 
 # Research Question
 
-Utility blades are a common household tool used in a variety of applications ranging from breaking down cardboard boxes to stripping wire. Rust is a major concern when working with tools. Depending on the tool, rust can make a tool less effective, unusable, or dangerous. Another factor that may contribute to the performance of a utility blade is the brand. The specifications and desire for quality between brands vary meaning the quality of product will also vary. Each brand sells their product at a specific price based on how good they think their product is meaning that price range also describes the quality of utility blade. This experiment seeks to discover the relationship between rust, brand, and price and the performance of utility blades. Performance is measured by primary function of the tool, the ability to cut. The results of this experiment seek to answer the question: which utility blade is the best purchase for a consumer?
+Utility blades are a common household tool used in a variety of applications ranging from breaking down cardboard boxes to stripping wire. Rust is a major concern when working with tools. Depending on the tool, rust can make a tool less effective, unusable, or dangerous. Another factor that may contribute to the performance of a utility blade is the brand. The specifications and desire for quality between brands vary meaning the quality of product will also vary. This experiment seeks to discover the relationship between rust and brand effect the performance of utility blades. Performance is measured by primary function of the tool, the ability to cut. The results of this experiment seek to answer the question: which utility blade is the best purchase for a consumer?
 
 # Design
 
 To answer this question, utility blades will be fit into a weighted jig and drug across a length of 550 paracord. The number of passes it takes to completely sever the cord is the response. As it is more desirable to have a blade that cuts efficiently, fewer passes to cut the cord is a desired characteristic.
 
-A pack of utility blades was bought from 10 well known brands. Price is broken up into 2 groups (low and high price) based on price per blade. The two price groups contain 5 brands, representing the 5 lowest price blades and the 5 highest priced blades. The brands, the number of blades per pack, pack price, price per blade, and price group are shown in table 1. 
+A pack of utility blades was bought from 10 well known brands. The brands, the number of blades per pack, pack price, and price per blade are shown in Table 1. Although price is not a factor in this analysis, it is presented here to for consideration of the consumer.
 
 ```{r, echo=FALSE}
-setwd("C:/Users/jctho/OneDrive/Documents/9 UIowa classes/stat5201 Applied Stat II/project (stat5201)")
 blade_price <- read.csv("blade prices (stat5201).csv")
 blade_price$group <- c(rep("L", 5), rep("H", 5))
 colnames(blade_price) <- c("Brand", "Num. Blades", "Price", "Price Per Blade", 
                            "Price group")
 blade_price <- arrange(blade_price, Brand)
-kable(blade_price, caption = "Utility Blade Brand and Prices", booktabs = T) |> row_spec(0,bold=TRUE)
+kable(blade_price[1:4],
+      caption = "Utility Blade Brand and Prices", booktabs = T) |>
+  row_spec(0,bold=TRUE)
 ```
 
 Four blades were randomly selected from each of the packs (each pack being a different brand). The first two blades selected receive the rust treatment and the second 2 blades receive the control treatment (no rust). Thus, there are 2 experimental units for each combination of brand and treatment. Table 2 shows the results of the treatment randomization where the value $i$ represents the $i^{th}$ blade from the front of the pack. The details of the randomization procedure can be found in the code appendix.
@@ -83,14 +84,13 @@ kable(list(order_table[1:20,], order_table[21:40,]),
       caption = "Testing Order", booktabs = T)
 ```
 
-Each blade was then secured into a jig to ensure there is no variation between the passes of each blade. The jig consists of half inch PVC pipe secured to wheels with a Xlb chain towards the front of the jig where the utility blade is held to ensure enough pressure is applied. A piece of 550 paracord is stretched over a piece of melamine, pulled tot, and stapled twice on each side to secure it to the melamine. The section between the sets of staples were the blade passes is approximately 1.5 inches. Each blade was tested only one time to prevent any variation in the response from dulling.
+Each blade was then secured into a jig to reduce variation between the passes of each blade. The jig consists of half inch PVC pipe secured to wheels with a Xlb chain towards the front of the jig where the utility blade is held to ensure enough pressure is applied. A piece of 550 paracord is stretched over a piece of melamine, pulled tot, and stapled twice on each side to secure it to the melamine. The section between the sets of staples were the blade passes is approximately 1.5 inches. Each blade was tested only one time to prevent any variation in the response from dulling.
 
-The factors of this experiment are treatment (rust or no rust), brand (see 10 brands in Table 1), and price group (high or low), all of which are fixed factors. Brand and treatment are crossed and brand is nested within price group. Each brand and treatment combination is replicated twice.
+The factors of this experiment are treatment (rust or no rust) and brand (see 10 brands in Table 1), both of which are fixed factors. These factors are crossed.
 
 # Data
 
 ```{r, echo=FALSE, message=FALSE}
-setwd("C:/Users/jctho/OneDrive/Documents/9 UIowa classes/stat5201 Applied Stat II/project (stat5201)")
 blade <- read.csv("blade order and collection (stat5201).csv")
 blade <- blade[-1]
 colnames(blade)[3] <- "pass"
@@ -104,12 +104,12 @@ blade_res <- blade_res |> group_by(brand, trt, `Price group`) |>
   summarise("con" = paste(pass, collapse = ", ")) |> 
   pivot_wider(names_from = trt, values_from = con)
 colnames(blade_res)[c(1,2)] <- c("Brand", "Price Group")
-res_tab <- kable(blade_res[c(2,1,3,4)], booktabs = T, caption = "Results") |>
-  add_header_above(c(" "=2, "Treatment" = 2)) |>
+res_tab <- kable(blade_res[c(1,3,4)], booktabs = T, caption = "Results") |>
+  add_header_above(c(" "=1, "Treatment" = 2)) |>
   kable_styling(position = "center") |> row_spec(0,bold=TRUE)
 ```
 
-The results from this experiment can be found in the appendix of this document. Diagram 1 shows the results by brand where the color designates the treatment applied to the utility blade. All brands seem to be centered around the 5 pass mark besides Hart and Stanley, which require more passes to cut the cord and have a higher variance of passes. The distribution of the results is visualized in diagrams 2 through 4. Diagram 2 and 3 show that the two price groups and two treatment groups have similar medians. The variance for the low price group is higher than that of the high price group and the variance of the control treatment is higher than that of the rust treatment group. Diagram 4 shows the right skewed distribution of the overall number of passes required to cut the cord. The mass of this distribution fall beneath 10 passes with a few exceptions falling above 10 passes.
+The results from this experiment can be found in the appendix of this document. Diagram 1 shows the results by brand where the color designates the treatment applied to the utility blade. All brands seem to be centered around the 5 pass mark besides Hart and Stanley, which require more passes to cut the cord and have a higher variance of passes. The distribution of the results is visualized in diagrams 2 and 3. Diagram 2 shows that  the median number of passes to cut the cord is slightly higher for the rust treatment than it is for the control. The variance for the control treatment is higher than that of the rust treatment group. Diagram 3 shows the right skewed distribution of the overall number of passes required to cut the cord. The mass of this distribution fall beneath 10 passes with a few exceptions falling above 10 passes.
 
 ```{r, echo=FALSE}
 colnames(blade) <- c("order", "util_blade", "pass", "brand", "trt", 
@@ -121,47 +121,42 @@ p0 <- ggplot(blade) +
   labs(title = "Diagram 1: Results by Brand")
 p0
 #
-p1 <- ggplot(blade) + 
-  geom_boxplot(aes(x = p_group, y = pass), outlier.color = NA)
-p1 <- p1 + geom_point(aes(x = p_group, y = pass, col = p_group),
-                position = position_jitter(width = .05), alpha = .5)+
-  labs(title = "Diagram 2: Distribuiton Between Price Groups")
-#
-p2 <- ggplot(blade) + geom_boxplot(aes(x = trt, y = pass), outlier.color = NA)
-p2 <- p2 + geom_point(aes(x = trt, y = pass, col = trt),
-                      position = position_jitter(width = .05), alpha = .5) +
-  labs(title = "Diagram 3: Distribuition Between Treatments")
+p2 <- ggplot(blade) + geom_boxplot(aes(y = trt, x = pass), outlier.color = NA)
+p2 <- p2 + geom_point(aes(y = trt, x = pass, col = trt),
+                      position = position_jitter(height = .05), alpha = .5) +
+  labs(title = "Diagram 2: Distribuition Between Treatments")
 #
 p3 <- ggplot(blade, aes(x = pass)) +
    geom_histogram() +
-  labs(title = "Diagram 4: Distribution of All Results")
-(p1 + p2) / p3 + plot_layout(heights = c(2,1))
+  labs(title = "Diagram 3: Distribution of All Results")
+p2 / p3 + plot_layout(heights = c(1,1))
 ```
 
 # Analysis
 
 ```{r}
+#check for outliers
 #
 blade$brand <- as.factor(blade$brand)
 blade$trt <- as.factor(blade$trt)
-blade$p_group <- as.factor(blade$p_group)
 #
-aov0 <- aov(pass ~ p_group*trt + brand*trt, data = blade)
+aov0 <- aov(pass ~ brand*trt, data = blade)
 plot(aov0)
 summary(aov0)
 boxcox(aov0)
 #
 blade$t_pass <- (blade$pass)^(-.5)
-aov01 <- aov(t_pass ~ p_group*trt + brand*trt, data = blade)
-plot(aov01)
+#
+aov1 <- aov(t_pass ~ brand*trt, data = blade)
+plot(aov1)
+summary(aov1)
+#
+aov2 <- aov(t_pass ~ brand + trt, data = blade)
+plot(aov2)
+summary(aov2)
+#do some contrasts
 ```
 
 
-```{r}
-EMSanova(t_pass ~ p_group + trt + brand,
-         data = blade,
-         type = c("R","F","R"),
-         nested = c(NA, NA, "p_group"))
-str(blade)
-```
+
 
