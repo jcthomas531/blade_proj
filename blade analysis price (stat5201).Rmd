@@ -1,5 +1,5 @@
 ---
-title: "Utility Knife Blade Consumer Recomendation"
+title: "Utility Knife Blade Consumer Recommendation"
 author: "J. C. Thomas"
 date: "4/16/2022"
 output: pdf_document
@@ -28,7 +28,7 @@ library(agricolae)
 
 |        To answer this question, utility blades are fit into a weighted jig and dragged across a length of 550 paracord. The number of passes it takes to completely sever the cord is the response. As it is more desirable to have a blade that cuts efficiently, a low number of passes to cut the cord is a desired outcome
 
-|        A pack of utility blades is bought from 10 well known brands. Price is broken up into 2 groups (low and high price) based on price per blade. The two price groups contain 5 brands each, representing the 5 lowest and 5 highest priced blades. The brand, the number of blades per pack, pack price, price per blade, and price group are shown in Table 1. 
+|        A pack of utility blades is bought from 10 well-known brands. Price is broken up into 2 groups (low and high price) based on price per blade. The two price groups contain 5 brands each, representing the 5 lowest and 5 highest priced blades. The brand, the number of blades per pack, pack price, price per blade, and price group are shown in Table 1. 
 
 ```{r, echo=FALSE}
 blade_price <- read.csv("blade prices (stat5201).csv")
@@ -63,7 +63,7 @@ kable(rand_groups, caption = "Treatment Assignment", booktabs = T) |> row_spec(0
 
 |        The two utility blades selected for the rust treatment are sprayed with a rusting solution of 150ml of vinegar, 150ml of hydrogen peroxide, and 5 teaspoons of salt. The blades are left outside on a piece of cardboard for 8 hours. They are flipped and resprayed with the solution every two hours. After the treatment, the blades are brought inside, dried, and set on a new piece of cardboard. They sit for another 12 hours before the testing begins. 
 
-|        The four of blades for each brand were assigned a blade number 1 though 4 with 1 and 2 corresponding rusted blades and 3 and 4 corresponding to control blades. All 40 blade number/ brand combinations were randomly placed into a testing order. The results of this randomization are found in Table 3 where the column "Utility Blade" contains the name of a brand followed by a blade number. The column "Order" contains the order in which the blades are tested. Details of the randomization process can be found in the code appendix.
+|        The four of blades for each brand were assigned a blade number 1 through 4 with 1 and 2 corresponding rusted blades and 3 and 4 corresponding to control blades. All 40 blade number/ brand combinations were randomly placed into a testing order. The results of this randomization are found in Table 3 where the column "Utility Blade" contains the name of a brand followed by a blade number. The column "Order" contains the order in which the blades are tested. Details of the randomization process can be found in the code appendix.
 
 ```{r, echo=FALSE}
 set.seed(826)
@@ -128,14 +128,14 @@ p1 <- ggplot(blade) +
   geom_boxplot(aes(x = p_group, y = pass), outlier.color = NA)
 p1 <- p1 + geom_point(aes(x = p_group, y = pass, col = p_group),
                 position = position_jitter(width = .05), alpha = .5)+
-  labs(title = "Diagram 2: Distribuiton Between Price Groups",
+  labs(title = "Diagram 2: Distribution Between Price Groups",
        x = "Price Group", y = "# Passes")+ 
   theme(plot.title = element_text(size = 10), legend.position="none")
 #
 p2 <- ggplot(blade) + geom_boxplot(aes(x = trt, y = pass), outlier.color = NA)
 p2 <- p2 + geom_point(aes(x = trt, y = pass, col = trt),
                       position = position_jitter(width = .05), alpha = .5) +
-  labs(title = "Diagram 3: Distribuition Between Treatments",
+  labs(title = "Diagram 3: Distribution Between Treatments",
        x="Treatment", y = "# Passes")+ 
   theme(plot.title = element_text(size = 10), legend.position="none")
 #
@@ -211,7 +211,7 @@ interaction.plot(x.factor = blade$brand,
                  main = "Diagram 9: Interaction Plot for Treatment and Brand")
 ```
 
-|        An ANOVA is ran for the full model on the transformed data yielding the results in Table 4. As all the effects in this model are fixed, the leading eligible random term is the error. This means that all tests will be performed with the MSE as the denominator. Table 4 indicates the interaction of treatment/brand[price group] is not significant, further giving support to possible one cell interactions. The one cell interactions previously specified are modeled as dummy variables and added to the transformed full model. They are each added individually to avoid problems with non-orthogonal columns. All of the dummy variables representing one cell interactions are significant when placed alone in the transformed full model. Thus, they are added in together to the transformed full model yielding the ANOVA table in Table 5. Note that "Dum. C/DC", "Dum. C/H", and "Dum. C/S" represent the dummy variables used for modeling the one cell interaction in control/Dewalt Carbide, control/Hart, and control/Stanley respectively.
+|        An ANOVA is run for the full model on the transformed data yielding the results in Table 4. As all the effects in this model are fixed, the leading eligible random term is the error. This means that all tests will be performed with the MSE as the denominator. Table 4 indicates the interaction of treatment/brand[price group] is not significant, further giving support to possible one cell interactions. The one cell interactions previously specified are modeled as dummy variables and added to the transformed full model. They are each added individually to avoid problems with non-orthogonal columns. All the dummy variables representing one cell interactions are significant when placed alone in the transformed full model. Thus, they are added in together to the transformed full model yielding the ANOVA table in Table 5. Note that "Dum. C/DC", "Dum. C/H", and "Dum. C/S" represent the dummy variables used for modeling the one cell interaction in control/Dewalt Carbide, control/Hart, and control/Stanley respectively.
 
 ```{r, echo=FALSE}
 #transformed anova
@@ -270,9 +270,9 @@ kable(df_sm5, caption = "Transformed Full Model with Dummy Variables ANOVA",
       booktabs = T) |> row_spec(0,bold=TRUE)
 ```
 
-|        The p-value for the treatment/brand[price group] interaction drastically decreases (from 0.87 to 0.99)  when the dummmy variables are included. This means that accounting for the 3 once cell interactions eleminates almost all of the interaction effect from the treatment/brand[price group] interaction. This makes removing the full interaction term much more palatable. 
+|        The p-value for the treatment/brand[price group] interaction drastically decreases (from 0.87 to 0.99)  when the dummy variables are included. This means that accounting for the 3 once cell interactions eliminates almost all of the interaction effect from the treatment/brand[price group] interaction. This makes removing the full interaction term much more palatable. 
 
-|        With interaction concerns nullified, backwards selection based on F value is conducted to find the most parsimonious model for the data. After only one round of elimination, the best model is found to include the three main effects (treatment, price group, and brand[price group]) and the effects of the dummy variables modeling the one cell interactions. All of these effects are significant at the $\alpha = 0.05$ level besides the effect of treatment which is significant only at the $\alpha = 0.1$ level. This indicates that the treatment effect is not significant. Adding to its non-significance is the fact that multiple tests are being performed in the ANOVA simultaneously. This falsely inflates the F statistic. However, in order for the model to remain hierarchical, the treatment effect must remain as it is used in the dummy variables modeling the one cell interactions. The ANOVA for this model is found in Table 6.
+|        With interaction concerns nullified, backwards selection based on F value is conducted to find the most parsimonious model for the data. After only one round of elimination, the best model is found to include the three main effects (treatment, price group, and brand[price group]) and the effects of the dummy variables modeling the one cell interactions. All these effects are significant at the $\alpha = 0.05$ level besides the effect of treatment which is significant only at the $\alpha = 0.1$ level. This indicates that the treatment effect is not significant. Adding to its non-significance is the fact that multiple tests are being performed in the ANOVA simultaneously. This falsely inflates the F statistic. However, the model to remain hierarchical, the treatment effect must remain as it is used in the dummy variables modeling the one cell interactions. The ANOVA for this model is found in Table 6.
 
 ```{r, include=FALSE}
 #drop treatment/brand
@@ -299,7 +299,7 @@ df_sm7[7,5] <- ""
 kable(df_sm7, caption = "Final Model ANOVA", booktabs = T) |> row_spec(0,bold=TRUE)
 ```
 
-|        With significant terms identified, post hoc investigation into the effects is performed to identify which levels of each factor differ significantly. This is be done through the use of pairwise contrasts. Contrast significance is evaluated with the Tukey HSD test at level $\alpha = 0.05$. Table 6 displays the brands that differ significantly from each other alongside the transformed mean and standard deviation for each brand. Any two brands not connected by a column of 1s are significantly different from one another. An example of this is the Stanley and Hart brands being connected by a column of 1s and therefore not being significantly different. However, Hart and Lenox are not connected by a column of 1s indicating they differ significantly. Pairwise contrasts are not necessary to determine which groups are significantly different in the price group effect as there are only two levels. By looking at the averages and the high P-value in Table 6 it is evident that the mean of the high price group (0.506) is significantly different than the mean of the low price group (0.397). 
+|        With significant terms identified, post hoc investigation into the effects is performed to identify which levels of each factor differ significantly. This is done using pairwise contrasts. Contrast significance is evaluated with the Tukey HSD test at level $\alpha = 0.05$. Table 6 displays the brands that differ significantly from each other alongside the transformed mean and standard deviation for each brand. Any two brands not connected by a column of 1s are significantly different from one another. An example of this is the Stanley and Hart brands being connected by a column of 1s and therefore not being significantly different. However, Hart and Lenox are not connected by a column of 1s indicating they differ significantly. Pairwise contrasts are not necessary to determine which groups are significantly different in the price group effect as there are only two levels. By looking at the averages and the high P-value in Table 6 it is evident that the mean of the high price group (0.506) is significantly different than the mean of the low price group (0.397). 
 
 ```{r, include=FALSE}
 #price group means
@@ -324,7 +324,7 @@ kable(brand_con[c(1,6,2,3,4,5)], caption = "Brand Contrasts", booktabs = T) |> r
 
 # Conclusion
 
-The final model given in the analysis section sheds light onto which utility blades are best for a consumer to buy. The factors considered in this experiment were rust, price range, and brand. It was found that whether or not a blade is rusty does not have a significant effect on a blade's ability to cut. Thus, marketing claims about a particular blade being resistant to rust need not be a  principle factor when selecting a utility blade. There are only 3 brands that saw effect from rusting. This effect was a decrease in cutting efficiency meaning that if a blade is being purchased for use in primarily wet environments (ie work on pools or boats), the Hart, DeWalt Carbide, and Stanley brands should be avoided. Beyond that, the brand purchased for work in wet applications does not matter.
+The final model given in the analysis section sheds light onto which utility blades are best for a consumer to buy. The factors considered in this experiment were rust, price range, and brand. It was found that whether or not a blade is rusty does not have a significant effect on a blade's ability to cut. Thus, marketing claims about a particular blade being resistant to rust need not be a principal factor when selecting a utility blade. There are only 3 brands that saw effect from rusting. This effect was a decrease in cutting efficiency meaning that if a blade is being purchased for use in primarily wet environments (i.e. work on pools or boats), the Hart, DeWalt Carbide, and Stanley brands should be avoided. Beyond that, the brand purchased for work in wet applications does not matter.
 
 The brand itself, however, is an important factor. When making these comparisons, it is important to recall that this analysis was carried out on the responses with a negative square root power transformation. This means that large values of the transformed response are desirable over small values. The Lenox brand came out on top with an average of 0.610 transformed passes to cut the cord (2.75 untransformed). The Lenox brand is the second most expensive brand tested making it not a budget friendly option. Via pairwise comparisons, it was determined that the Lenox brand has no discernible difference in cutting performance from the Husky brand, which is second least expensive. The Husky brand is a more economical brand that will yield the same level of performance. The two brands that performed the worst were Stanley and Hart. Hart was the clear loser in this match up averaging 0.257 transformed passes (17 untransformed). Although having a slightly better average, Stanley utility blades do not offer significantly superior performance. This is expected from a considerably new brand like Hart but disappointing from Stanley as it is a well established company.
 
