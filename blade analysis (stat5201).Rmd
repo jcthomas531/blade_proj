@@ -155,8 +155,29 @@ aov2 <- aov(t_pass ~ brand + trt, data = blade)
 plot(aov2)
 summary(aov2)
 #do some contrasts
+interaction.plot(x.factor = blade$brand,
+                 trace.factor = blade$trt,
+                 response = blade$t_pass)
+blade_avgs <- blade |>
+  group_by(brand, trt) |> 
+  summarise("avg" = mean(t_pass)) |>
+  ungroup()
+blade_avgs$trt_n <- rep(c(1,2), 10)
+ggplot(blade_avgs, aes(x = trt_n, y = avg, col = brand)) +
+  geom_line()
 ```
 
 
+```{r}
+aov(pass ~ p_group + brand %in% p_group + trt + p_group*trt
+    + trt:(brand%in%p_group),
+    data = blade) |>
+  summary()
+
+aov(t_pass ~ p_group + brand %in% p_group + trt + p_group*trt
+    + trt:(brand%in%p_group),
+    data = blade) |>
+  summary()
+```
 
 
