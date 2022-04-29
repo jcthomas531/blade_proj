@@ -1,5 +1,5 @@
 ---
-title: "rand scheme"
+title: "Utility Knife Blade Consumer Recomendation"
 author: "J. C. Thomas"
 date: "4/16/2022"
 output: pdf_document
@@ -22,13 +22,13 @@ library(agricolae)
 
 # Research Question
 
-Utility blades are a common household tool used in a variety of applications ranging from breaking down cardboard boxes to stripping wire. Rust is a major concern when working with tools. Depending on the tool, rust can make a tool less effective, unusable, or dangerous. Another factor that may contribute to the performance of a utility blade is the brand. The specifications and desire for quality between brands vary meaning the quality of product will also vary. Each brand sells their product at a specific price based on how good they think their product is meaning that price range also describes the quality of utility blade. This experiment seeks to discover the relationship between rust, brand, and price and the performance of utility blades. Performance is measured by primary function of the tool, the ability to cut. The results of this experiment seek to answer the question: which utility blade is the best purchase for a consumer?
+|        Utility blades are a common household tool used in a variety of applications ranging from breaking down cardboard boxes to stripping wire. Rust is a major concern when working with tools. Depending on the implement, rust can make a tool less effective or unusable. In addition to rust, another factor that may contribute to the performance of a utility blade is the brand as specifications for product manufacturing differ. The price of a utility blade may also reflect the quality of the tool. This experiment seeks to discover the relationship between the performance of utility blades and rust, brand, and price. Performance is measured by primary function of the tool, the ability to cut. The goal of this analysis is to inform the consumer on which utility blades the best cutting power.
 
 # Design
 
-To answer this question, utility blades will be fit into a weighted jig and drug across a length of 550 paracord. The number of passes it takes to completely sever the cord is the response. As it is more desirable to have a blade that cuts efficiently, fewer passes to cut the cord is a desired characteristic.
+|        To answer this question, utility blades are fit into a weighted jig and dragged across a length of 550 paracord. The number of passes it takes to completely sever the cord is the response. As it is more desirable to have a blade that cuts efficiently, a low number of passes to cut the cord is a desired outcome
 
-A pack of utility blades was bought from 10 well known brands. Price is broken up into 2 groups (low and high price) based on price per blade. The two price groups contain 5 brands, representing the 5 lowest price blades and the 5 highest priced blades. The brands, the number of blades per pack, pack price, price per blade, and price group are shown in table 1. 
+|        A pack of utility blades is bought from 10 well known brands. Price is broken up into 2 groups (low and high price) based on price per blade. The two price groups contain 5 brands each, representing the 5 lowest and 5 highest priced blades. The brand, the number of blades per pack, pack price, price per blade, and price group are shown in Table 1. 
 
 ```{r, echo=FALSE}
 blade_price <- read.csv("blade prices (stat5201).csv")
@@ -39,7 +39,7 @@ blade_price <- arrange(blade_price, Brand)
 kable(blade_price, caption = "Utility Blade Brand and Prices", booktabs = T) |> row_spec(0,bold=TRUE)
 ```
 
-Four blades were randomly selected from each of the packs (each pack being a different brand). The first two blades selected receive the rust treatment and the second 2 blades receive the control treatment (no rust). Thus, there are 2 experimental units for each combination of brand and treatment. Table 2 shows the results of the treatment randomization where the value $i$ represents the $i^{th}$ blade from the front of the pack. The details of the randomization procedure can be found in the code appendix.
+|        Four blades are randomly selected from each of the packs (each pack being a different brand). The first two blades selected receive the experimental treatment (rust) and the second 2 blades receive the control treatment (no rust). Thus, there are 2 experimental units for each combination of brand and treatment. Table 2 shows the results of the random treatment assignment where the value $i$ represents the $i^{th}$ blade from the front of the pack. This $i^{th}$ blade is selected for a given treatment. The details of the randomization procedure can be found in the code appendix.
 
 ```{r, echo=FALSE}
 set.seed(826)
@@ -61,9 +61,9 @@ colnames(rand_groups) <- c("Rust", "Rust", "Control", "Control")
 kable(rand_groups, caption = "Treatment Assignment", booktabs = T) |> row_spec(0,bold=TRUE)
 ```
 
-The two utility blades selected for the rust treatment were then sprayed with a rusting solution of 150ml of vinegar, 150ml of hydrogen peroxide, and 5 teaspoons of salt. The blades were left outside on a piece of cardboard for 8 hours being flipped and resprayed with the solution every two hours. After the treatment, the blades were brought inside, dried, and set on a new piece of cardboard.They sat for another 12 hours before the testing began. 
+|        The two utility blades selected for the rust treatment are sprayed with a rusting solution of 150ml of vinegar, 150ml of hydrogen peroxide, and 5 teaspoons of salt. The blades are left outside on a piece of cardboard for 8 hours. They are flipped and resprayed with the solution every two hours. After the treatment, the blades are brought inside, dried, and set on a new piece of cardboard. They sit for another 12 hours before the testing begins. 
 
-The four of blades for each brand were assigned a blade number 1 though 4 with 1 and 2 corresponding to a rusted blade and 3 and 4 corresponding to a control blade. All 40 blade number and brand combinations were randomly placed into a cutting order. The results of this randomization are found in table 3 where the column "Utility Blade" contains the name of a brand followed by a blade number. Details of the randomization process can be found in the code appendix.
+|        The four of blades for each brand were assigned a blade number 1 though 4 with 1 and 2 corresponding rusted blades and 3 and 4 corresponding to control blades. All 40 blade number/ brand combinations were randomly placed into a testing order. The results of this randomization are found in Table 3 where the column "Utility Blade" contains the name of a brand followed by a blade number. The column "Order" contains the order in which the blades are tested. Details of the randomization process can be found in the code appendix.
 
 ```{r, echo=FALSE}
 set.seed(826)
@@ -84,9 +84,9 @@ kable(list(order_table[1:20,], order_table[21:40,]),
       caption = "Testing Order", booktabs = T)
 ```
 
-Each blade was then secured into a jig to ensure there is no variation between the passes of each blade. The jig consists of half inch PVC pipe secured to wheels with a Xlb chain towards the front of the jig where the utility blade is held to ensure enough pressure is applied. A piece of 550 paracord is stretched over a piece of melamine, pulled tot, and stapled twice on each side to secure it to the melamine. The section between the sets of staples were the blade passes is approximately 1.5 inches. Each blade was tested only one time to prevent any variation in the response from dulling.
+|        Each blade is individually secured into a jig to remove operator variation between passes of the blade. The jig consists of half inch PVC pipe secured to wheels. A 5lb chain weights down the front of the jig where the utility blade is held to ensure sufficient pressure is applied. A piece of 550 paracord is stretched over a piece of melamine, pulled tot, and stapled twice on each side to secure it to the melamine. The blade passes over the 1.5 inch tot section of cord secured between the sets of staples. Each blade was tested only one time to prevent any variation in the response from dulling.
 
-The factors of this experiment are treatment (rust or no rust), brand (see 10 brands in Table 1), and price group (high or low), all of which are fixed factors. Brand and treatment are crossed and brand is nested within price group. Each brand and treatment combination is replicated twice.
+|        The factors of this experiment are treatment (rust or no rust), brand (see 10 brands in Table 1), and price group (high or low), all of which are fixed factors. Brand/treatment and price group/treatment are both crossed and brand is nested within price group. Each brand and treatment combination is replicated twice.
 
 # Data
 
@@ -109,9 +109,9 @@ res_tab <- kable(blade_res[c(2,1,3,4)], booktabs = T, caption = "Results") |>
   kable_styling(position = "center") |> row_spec(0,bold=TRUE)
 ```
 
-The results from this experiment can be found in the appendix of this document. Diagram 1 shows the results by brand where the color designates the treatment applied to the utility blade. All brands seem to be centered around the 5 pass mark besides Hart and Stanley, which require more passes to cut the cord and have a higher variance of passes. The distribution of the results is visualized in diagrams 2 through 4. Diagram 2 and 3 show that the two price groups and two treatment groups have similar medians. The variance for the low price group is higher than that of the high price group and the variance of the control treatment is higher than that of the rust treatment group. Diagram 4 shows the right skewed distribution of the overall number of passes required to cut the cord. The mass of this distribution fall beneath 10 passes with a few exceptions falling above 10 passes.
+|        The data collected from this experiment can be found in the appendix of this document and is presented graphically in this section. Diagram 1 shows the results by brand where the color designates the treatment applied to the utility blade. All brands seem to be centered around the 5 pass mark besides Hart and Stanley. These two brands require more passes to cut the cord and have a higher variance of passes. The distribution of the results is visualized in Diagrams 2 through 4. Diagrams 2 and 3 show that both price groups and both treatment groups have similar medians. The variance for the low price group is higher than that of the high price group. The variance of the control treatment is higher than that of the rust treatment. Diagram 4 shows the distribution of the overall number of passes required to cut the cord. The mass of this distribution fall beneath 10 passes and the distribution is right skewed.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig1, fig.height = 3, fig.width = 10, fig.align = "center"}
 colnames(blade) <- c("order", "util_blade", "pass", "brand", "trt", 
                      "num_blade", "price", "ppb", "p_group")
 #
@@ -120,27 +120,36 @@ p0 <- ggplot(blade) +
              position = position_jitter(width = .05)) +
   labs(title = "Diagram 1: Results by Brand")
 p0
+```
+
+```{r, echo=FALSE, fig2, fig.height = 4, fig.width = 7, fig.align = "center"}
 #
 p1 <- ggplot(blade) + 
   geom_boxplot(aes(x = p_group, y = pass), outlier.color = NA)
 p1 <- p1 + geom_point(aes(x = p_group, y = pass, col = p_group),
                 position = position_jitter(width = .05), alpha = .5)+
-  labs(title = "Diagram 2: Distribuiton Between Price Groups")
+  labs(title = "Diagram 2: Distribuiton Between Price Groups",
+       x = "Price Group", y = "# Passes")+ 
+  theme(plot.title = element_text(size = 10), legend.position="none")
 #
 p2 <- ggplot(blade) + geom_boxplot(aes(x = trt, y = pass), outlier.color = NA)
 p2 <- p2 + geom_point(aes(x = trt, y = pass, col = trt),
                       position = position_jitter(width = .05), alpha = .5) +
-  labs(title = "Diagram 3: Distribuition Between Treatments")
+  labs(title = "Diagram 3: Distribuition Between Treatments",
+       x="Treatment", y = "# Passes")+ 
+  theme(plot.title = element_text(size = 10), legend.position="none")
 #
 p3 <- ggplot(blade, aes(x = pass)) +
    geom_histogram() +
-  labs(title = "Diagram 4: Distribution of All Results")
-(p1 + p2) / p3 + plot_layout(heights = c(2,1))
+  labs(title = "Diagram 4: Distribution of All Results",
+       x = "# Passes", y = "Count") + 
+  theme(plot.title = element_text(size = 10))
+((p1 + p2) / p3 + plot_layout(heights = c(2,1))) |> print() |> suppressMessages()
 ```
 
 # Analysis
 
-The structure of this experiment consists of three fixed factors: treatment, price group, and brand. Brand is nested within price group and will be notated brand[price group]. Treatment and price group are crossed and so is treatment and brand[price group]. The model used to fit this structure is as follows:
+|        The structure of this experiment consists of three fixed factors: treatment, price group, and brand. Brand is nested within price group and will be notated brand[price group]. Treatment and price group are crossed and so is treatment and brand[price group]. The model used to fit this structure is as follows:
 
 $$y_{ijkm} = \mu + \alpha_i + \beta_j + \gamma_{k[j]} + (\alpha \beta)_{i,j} + (\alpha\gamma)_{i,k[j]} + \epsilon_{m[i,k[j]]}$$
 with
@@ -151,46 +160,61 @@ with
  * $\gamma_{k[j]}$: $k^{th}$ level of brand[price group]
  * $\epsilon_{m[i,k[j]]}$: error.
  
-The full model is fit to the data under the typical assumptions of error independence, homoscedasticity, and error normality. Diagnostic plots for this fit are given in Diagram 5. The glaring assumption violation in Diagram 5 on the plot "Residuals vs Fitted" is the non-constant variance in a right fanning shape. The Box-Cox procedure applied to the full model (shown in Diagram 6), shows that a inverse square root transformation may help stabilize the variance. This transformation is performed on the response variables and the full model is fit on the transformed responses. The diagnostic plots for the full model on the transformed responses are shown in Diagram 7. The diagnostic plots in Diagram 7 indicate constant variance (no patterns in "Residuals vs Fitted") and normality of errors (adherence to the normal line in "Normal Q-Q") assumptions are both met. As the data are not temporally related, dependence will not be checked for the sake of brevity. Checking for outliers by comparing the absolute value of the externally studentized residuals to a Bonferroni
-corrected t-value indicates there are no outliers.
+|        The full model is fit to the data under the typical assumptions of error independence, homoscedasticity, and error normality. Diagnostic plots for this fit are given in Diagram 5. The glaring assumption violation in Diagram 5 is the non-constant variance on the plot "Residuals vs Fitted". This indicates a violation of homoscedasticity. The Box-Cox procedure (Diagram 6) applied to the full model, shows that a inverse square root transformation may help stabilize the variance. This transformation is performed on the response variable and the full model is fit on the transformed responses. The diagnostic plots for the full model on the transformed responses are shown in Diagram 7. The diagnostic plots in Diagram 7 indicate constant variance (no patterns in "Residuals vs Fitted") and normality of errors (adherence to the normal line in "Normal Q-Q") assumptions are both met. Checking for outliers by comparing the absolute value of the externally studentized residuals to a Bonferroni corrected t-value indicates there are no outliers.
 
-```{r, echo=FALSE, results='hide', fig.show=TRUE, warning=FALSE}
+```{r, echo=FALSE,fig3, fig.height = 4, fig.width = 4, fig.align = "center"}
 #fit full model
 blade_m0 <- aov(pass ~ trt + p_group + brand%in%p_group + trt:p_group +
                   trt:(brand%in%p_group), data = blade)
 par(mfrow=c(2,2))
-plot(blade_m0)
-#boxplot
+plot(blade_m0) |> suppressMessages()
+```
+
+```{r, echo=FALSE, fig4, fig.height = 3, fig.width = 3, fig.align = "center"}
+#boxcox
 par(mfrow=c(1,1))
 boxcox(blade_m0)
+```
+```{r, echo=FALSE, fig5, fig.height = 4, fig.width = 4, fig.align = "center"}
 #transform response and fit full model
 blade$t_pass <- (blade$pass)^(-.5)
 blade_m1 <- aov(t_pass ~ trt + p_group + brand%in%p_group + trt:p_group +
                   trt:(brand%in%p_group), data = blade)
 par(mfrow=c(2,2))
-plot(blade_m1)
+plot(blade_m1) |> suppressMessages()
 #checking for outliers
 ex_resids_m1 <- rstudent(blade_m1)
 t_resid <- qt(.05/(2*nrow(blade)), df = 8) #df here df of highest interaction
-sum(t_resid > abs(ex_resids_m1), na.rm = TRUE)
+num_res <- sum(t_resid > abs(ex_resids_m1), na.rm = TRUE)
 ```
 
 
-Interaction plots for both of the treatment/price group and treatment/brand[price group] are shown in Diagram 8 and 9 respectively. Diagram 8 shows no evidence of interaction between treatment and price group. There are some intersecting lines in Diagram 8 indicating that some of the treatment/brand[price group] interactions may be significant. Due to limitations with the software, not all brand names could be shown on the x axis however they are in the same order as in Table 1. The control/Dewalt Carbide, control/Hart, and control/Stanley combination indicate possible 1 cell interaction.
-```{r, echo=FALSE}
+|        Interaction plots for the treatment/price group interaction and treatment/brand[price group] interaction are shown in Diagram 8 and 9 respectively. Diagram 8 shows no evidence of interaction between treatment and price group. There are some intersecting lines in Diagram 9 indicating that some of the treatment/brand[price group] interactions may be significant. Due to limitations with the software, not all brand names could be shown on the x axis however they are in the same order as in Table 1. The control/DeWalt Carbide, control/Hart, and control/Stanley interactions show overlap or sudden trend variation thus indicating possible 1 cell interaction.
+
+```{r, echo=FALSE, fig6, fig.height = 4, fig.width = 8, fig.align = "center"}
 #interaction plots
-attach(blade)
-interaction.plot(x.factor = trt,
-                 trace.factor = p_group, 
-                 response = pass)
-interaction.plot(x.factor = brand,
-                 trace.factor = trt, 
-                 response = pass)
+interaction.plot(x.factor = blade$trt,
+                 trace.factor = blade$p_group, 
+                 response = blade$t_pass,
+                 ylab = "# Passes (transformed",
+                 xlab = "Treatment",
+                 trace.label = "Price Group",
+                 main = "Diagram 8: Interaction Plot for Price Group and Treatment")
+```
+```{r, echo=FALSE, fig7, fig.height = 4, fig.width = 8, fig.align = "center"}
+interaction.plot(x.factor = blade$brand,
+                 trace.factor = blade$trt, 
+                 response = blade$t_pass,
+                 ylab = "# Passes (transformed",
+                 xlab = "Brand",
+                 trace.label = "Treatment",
+                 main = "Diagram 9: Interaction Plot for Treatment and Brand")
 ```
 
-An ANOVA is ran for the full model on the transformed data yielding the results in Table 4. As all the effects in this model are fixed, the leading eligible random term is the error, meaning that all tests will be done with the MSE as the denominator. Via Table 4 we see that the interaction of treatment and brand[price group] is not significant, further giving support to possible one cell interactions. The one cell interactions previously specified will be modeled as dummy variables and added to the transformed full model individually to avoid problems with non-orthogonal columns. All of the dummy variables representing one cell interactions are significant when placed alone in the transformed full model and are therefore added in together to the transformed full model yielding the ANOVA table in Table 5. Note that "d_ch", "d_cs", and "d_cdc" represent the dummy variables used for modeling the one cell interaction in control/Dewalt Carbide, control/Hart, and control/Stanley respectively.
+|        An ANOVA is ran for the full model on the transformed data yielding the results in Table 4. As all the effects in this model are fixed, the leading eligible random term is the error. This means that all tests will be performed with the MSE as the denominator. Table 4 indicates the interaction of treatment/brand[price group] is not significant, further giving support to possible one cell interactions. The one cell interactions previously specified are modeled as dummy variables and added to the transformed full model. They are each added individually to avoid problems with non-orthogonal columns. All of the dummy variables representing one cell interactions are significant when placed alone in the transformed full model. Thus, they are added in together to the transformed full model yielding the ANOVA table in Table 5. Note that "Dum. C/DC", "Dum. C/H", and "Dum. C/S" represent the dummy variables used for modeling the one cell interaction in control/Dewalt Carbide, control/Hart, and control/Stanley respectively.
 
 ```{r, echo=FALSE}
+#transformed anova
 sm1 <- summary(blade_m1)
 df_sm1 <- matrix(unlist(sm1), ncol = 5) |> round(4) |>
   as.data.frame()
@@ -246,9 +270,9 @@ kable(df_sm5, caption = "Transformed Full Model with Dummy Variables ANOVA",
       booktabs = T) |> row_spec(0,bold=TRUE)
 ```
 
-The p-value for the treatment/ brand[price group] interaction has drastically decreased (from 0.87 to 0.99) with the addition of the one cell interaction dummy variables meaning they were successful in removing almost all of the interaction effect from these crossed factors. This makes removing the full interaction term much more palatable. 
+|        The p-value for the treatment/brand[price group] interaction drastically decreases (from 0.87 to 0.99)  when the dummmy variables are included. This means that accounting for the 3 once cell interactions eleminates almost all of the interaction effect from the treatment/brand[price group] interaction. This makes removing the full interaction term much more palatable. 
 
-With interaction concerns removed, backwards selection based on F value is conducted to find the most parsimonious model for the data. After only one round of elimination, the best model is found to include the three main effects (treatment, price group, and brand[price group]) and the effects of the dummy variables modeling the one cell interaction for control/Dewalt Carbide, control/Hart, and control/Stanley. All of these effects are significant at the $\alpha = 0.05$ level besides the effect of treatment which is significant only at the $\alpha = 0.1$ level. This indicates that the treatment effect is not significant. Adding to its non-significance is the fact that multiple tests are being performed in the ANOVA likely inflating the F statistic falsely. However, in order for the model to remain hierarchical, the treatment effect must remain as it is used in the dummy variable modeling the one cell interactions. The ANOVA for this model is found in Table 6.
+|        With interaction concerns nullified, backwards selection based on F value is conducted to find the most parsimonious model for the data. After only one round of elimination, the best model is found to include the three main effects (treatment, price group, and brand[price group]) and the effects of the dummy variables modeling the one cell interactions. All of these effects are significant at the $\alpha = 0.05$ level besides the effect of treatment which is significant only at the $\alpha = 0.1$ level. This indicates that the treatment effect is not significant. Adding to its non-significance is the fact that multiple tests are being performed in the ANOVA simultaneously. This falsely inflates the F statistic. However, in order for the model to remain hierarchical, the treatment effect must remain as it is used in the dummy variables modeling the one cell interactions. The ANOVA for this model is found in Table 6.
 
 ```{r, include=FALSE}
 #drop treatment/brand
@@ -275,7 +299,7 @@ df_sm7[7,5] <- ""
 kable(df_sm7, caption = "Final Model ANOVA", booktabs = T) |> row_spec(0,bold=TRUE)
 ```
 
-Since significant terms have been identified, post hoc investigation into the terms can be performed to identify which levels of each factor differ significantly. This will be done through the use of pairwise contrasts with significance evaluated with the Tukey HSD at level $\alpha = 0.05$. Table 6 gives a contrast table displaying the brands that differ significantly from each other along with their transformed means. Any two brands not connected by a column of 1s are significantly different from one another. In example of this is the Stanley and Hart brands being connected by a column of 1s and therefore not significantly different. However, Hart and Lenox are not connected by a column of 1s indicating that they differ significantly. Pairwise contrasts are not necessary to determine a difference which groups are significantly different for the price group effect as there are only two levels. By looking at the averages we see that the mean of the high price group (0.506) is significantly different than the mean of the low price group (0.397). 
+|        With significant terms identified, post hoc investigation into the effects is performed to identify which levels of each factor differ significantly. This is be done through the use of pairwise contrasts. Contrast significance is evaluated with the Tukey HSD test at level $\alpha = 0.05$. Table 6 displays the brands that differ significantly from each other alongside the transformed means for each brand. Any two brands not connected by a column of 1s are significantly different from one another. An example of this is the Stanley and Hart brands being connected by a column of 1s and therefore not being significantly different. However, Hart and Lenox are not connected by a column of 1s indicating they differ significantly. Pairwise contrasts are not necessary to determine which groups are significantly different in the price group effect as there are only two levels. By looking at the averages and the high P-value in Table 6 it is evident that the mean of the high price group (0.506) is significantly different than the mean of the low price group (0.397). 
 
 ```{r, include=FALSE}
 #price group means
@@ -294,3 +318,5 @@ colnames(brand_con)[1] <- "Avg. # Passes (transformed)"
 brand_con <- brand_con[-2]
 kable(brand_con, caption = "Brand Contrasts", booktabs = T) |> row_spec(0,bold=TRUE)
 ```
+
+# Conclusion
